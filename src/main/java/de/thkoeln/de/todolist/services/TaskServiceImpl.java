@@ -24,7 +24,7 @@ public class TaskServiceImpl implements TaskService {
     public Task getById(UUID id) throws NotFoundException{
         
         Optional<Task> taskFromRepo = taskRepository.findById(id);
-        Task task = null;
+        Task task;
         if(taskFromRepo.isPresent()){
             task = taskFromRepo.get();
         } else {

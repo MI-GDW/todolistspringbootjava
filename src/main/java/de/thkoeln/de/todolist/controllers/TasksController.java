@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import de.thkoeln.de.todolist.models.Task;
 import de.thkoeln.de.todolist.services.TaskServiceImpl;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
