@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodoList</title>
+</head>
+<body>
+<h1>My <span th:text="${completed} ? 'completed' : 'open'"></span> tasks</h1>
+    <ul>
+        <th:block th:each="task: ${tasks}">
+            <li>
+                <span th:text="${task.name}"></span>
+                <button th:id="${task.id}" class="setTask" onclick="setTask(this)"
+                        th:text="${completed} ? 'Delete' : 'Done'">
+                </button>
+
+            </li>
+        </th:block>
+    </ul>
+
+    <h2>Add new Task</h2>
+    <form action="/tasks" method="post" th:object="${taskDTO}">
+        <input type="text" th:field="*{name}" placeholder="new Task">
+        <button type="submit">Add</button>
+    </form>
+    <br>
+    <a th:href="${completed} ? '/' : '/?completed=true'">
+        My <span th:text="${completed} ? 'open' : 'completed'"></span> tasks
+    </a>
+</body>
+<script>
+
+    function setTask(element){
+        let taskId = element.id
+
+        let buttonElement = element
+        let xhr = new XMLHttpRequest()
+
+        if(buttonElement.innerText == "Done") {
+            let task = {"completed": true}
+            xhr.open("PUT",`/api/v1/tasks/${taskId}`)
+            xhr.setRequestHeader("Content-Type","application/json")
+            xhr.send(JSON.stringify(task))
+        } else if(buttonElement.innerText = "Delete") {
+            xhr.open("DELETE",`/api/v1/tasks/${taskId}`)
+            xhr.send()
+        }
+
+        xhr.onreadystatechange = function(){
+            if(this.readyState == 4 && this.status == 204) {
+                console.log(buttonElement)
+                buttonElement.parentElement.remove()
+            }
+
+        }
+    }
+</script>
+</html>
